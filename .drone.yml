@@ -1,0 +1,21 @@
+pipeline:
+  publish:
+    image: plugins/docker
+    repo: registry.honestbee.com/drone-s3cache
+    registry: ${DOCKER_REGISTRY}
+    secrets: [ docker_username, docker_password, docker_registry ]
+    build_args:
+      - DOCKER_TAG=${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+    tags:
+      - ${DRONE_COMMIT_BRANCH}-${DRONE_COMMIT_SHA:0:8}
+      - ${DRONE_COMMIT_BRANCH}
+    when:
+      event: push
+
+  notify:
+    image: plugins/slack
+    webhook: ${SLACK_WEBHOOK}
+    secrets:  [ slack_webhook ]
+    channel: feed-devops
+    when:
+      status: [ success, failure ]
