@@ -9,6 +9,7 @@ import tarfile
 class S3Cache:
     def build(self, s3client, bucket, sources, namespace):
         for path in sources:
+            print "building %s" % path
             if os.path.exists(path):
                 print "Rebuilding cache for %s..." % path
 
