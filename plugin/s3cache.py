@@ -12,7 +12,7 @@ class S3Cache:
             if os.path.exists(path):
                 print "Rebuilding cache for %s..." % path
 
-                tarname = namespace + ".tar.gz"
+                tarname = path + ".tar.gz"
                 tar = tarfile.open(tarname, "w:gz")
                 tar.add(path)
                 tar.close()
@@ -29,7 +29,7 @@ class S3Cache:
         for source in sources:
             print "Restoring cache for %s..." % source
 
-            tarname = namespace + ".tar.gz"
+            tarname = source + ".tar.gz"
             s3path = '/'.join([namespace, tarname])
             
             obj = s3client.list_objects(Bucket=bucket, Prefix=s3path)
